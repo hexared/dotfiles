@@ -26,6 +26,7 @@ Plug 'blueshirts/darcula'
 Plug 'w0ng/vim-hybrid'
 Plug 'tomasiser/vim-code-dark'
 Plug 'Heorhiy/VisualStudioDark.vim'
+Plug 'lifepillar/vim-solarized8'
 
 call plug#end()             " required
 filetype plugin indent on     " required
@@ -89,7 +90,6 @@ let g:syntastic_check_on_open = 0
 let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_aggregate_errors = 1
 let g:syntastic_enable_signs = 1
-"let g:EclimCompletionMethod = 'omnifunc'
 " I Like snippets!
 let g:UltiSnipsListSnippets="<c-h>"
 let g:UltiSnipsExpandTrigger="<tab>"
@@ -165,7 +165,6 @@ set noswapfile
 
 " play nicely with modern graphics
 set encoding=utf8
-"set background=dark
 colorscheme darcula
 set termguicolors
 
