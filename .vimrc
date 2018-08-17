@@ -49,6 +49,7 @@ augroup END
 let g:deoplete#enable_at_startup = 1
 let g:deoplete#sources#jedi#python_path = '/bin/python3.6'
 let g:deoplete#sources#jedi#extra_path = '/usr/local/lib64/python3.6/site-packages/'
+let g:deoplete#num_processes = 1
 
 """ CtrlP
 " set ctrlp to same working directory
