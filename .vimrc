@@ -27,6 +27,7 @@ Plug 'w0ng/vim-hybrid'
 Plug 'tomasiser/vim-code-dark'
 Plug 'Heorhiy/VisualStudioDark.vim'
 Plug 'lifepillar/vim-solarized8'
+Plug 'BrainDeath0/Hypsteria'
 
 call plug#end()             " required
 filetype plugin indent on     " required
@@ -49,6 +50,7 @@ augroup END
 let g:deoplete#enable_at_startup = 1
 let g:deoplete#sources#jedi#python_path = '/bin/python3.6'
 let g:deoplete#sources#jedi#extra_path = '/usr/local/lib64/python3.6/site-packages/'
+let g:deoplete#num_processes = 1
 
 """ CtrlP
 " set ctrlp to same working directory
@@ -150,7 +152,7 @@ noremap <S-M-Left> :2winc><cr>
 noremap <S-M-Right> :2winc<<cr>
 
 "shortcut night/day"
-map <S-n> :colorscheme darcula<cr>
+map <S-n> :colorscheme hypsteria<cr>
 map <S-d> :colorscheme github<cr>
 
 " ==========================================================================="
@@ -165,7 +167,7 @@ set noswapfile
 
 " play nicely with modern graphics
 set encoding=utf8
-colorscheme darcula
+colorscheme hypsteria
 set termguicolors
 
 set lazyredraw ttyfast synmaxcol=200 ttimeoutlen=20
