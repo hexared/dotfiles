@@ -3,20 +3,24 @@ filetype off                  " required
 
 call plug#begin('~/.vim/plugged')
 " utilities
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'junegunn/fzf.vim'
 Plug 'scrooloose/nerdtree'            " split file manager
-Plug 'ctrlpvim/ctrlp.vim'             " fuzzy finder
 Plug 'vim-airline/vim-airline'        " tabs and statusline
+Plug 'ervandew/supertab'              " Tab fr autocomplete
 " languages
 Plug 'zchee/deoplete-jedi'
 Plug 'Shougo/deoplete.nvim'
+Plug 'deoplete-plugins/deoplete-go', { 'do': 'make'}
 Plug 'roxma/nvim-yarp'
 Plug 'roxma/vim-hug-neovim-rpc'
 Plug 'sheerun/vim-polyglot'                             " lang packs!
 Plug 'artur-shaik/vim-javacomplete2', { 'for': 'java' } " java
-Plug 'fatih/vim-go', { 'do': ':GoInstallBinaries' }
+Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 Plug 'sebastianmarkow/deoplete-rust', { 'for': 'rust' } " rust
 Plug 'scrooloose/syntastic'           " linting
 Plug 'ludovicchabant/vim-gutentags'   " tags navigation Ctrl+] or Ctrl+click to jump
+Plug 'stamblerre/gocode', { 'rtp': 'vim', 'do': '~/.vim/plugged/gocode/vim/symlink.sh' } " Go completion for deoplete
 " snippets
 Plug 'sirver/ultisnips'
 Plug 'honza/vim-snippets'
@@ -28,6 +32,7 @@ Plug 'tomasiser/vim-code-dark'
 Plug 'Heorhiy/VisualStudioDark.vim'
 Plug 'lifepillar/vim-solarized8'
 Plug 'BrainDeath0/Hypsteria'
+Plug '89luca89/vim-code-dark'
 
 call plug#end()             " required
 filetype plugin indent on     " required
@@ -48,9 +53,12 @@ augroup END
 
 " Use deoplete.
 let g:deoplete#enable_at_startup = 1
-let g:deoplete#sources#jedi#python_path = '/bin/python3.6'
-let g:deoplete#sources#jedi#extra_path = '/usr/local/lib64/python3.6/site-packages/'
-let g:deoplete#num_processes = 1
+let g:deoplete#sources#jedi#python_path = '/bin/python3.8'
+let g:deoplete#sources#jedi#extra_path = '/usr/local/lib64/python3.8/site-packages/'
+let g:deoplete#sources#go#gocode_binary = '$GOPATH/bin/gocode'
+let g:deoplete#sources#go#sort_class = ['package', 'func', 'type', 'var', 'const']
+let g:deoplete#sources#go#pointers = 1
+"let g:deoplete#num_processes = 1
 
 """ CtrlP
 " set ctrlp to same working directory
@@ -108,9 +116,8 @@ map <silent> <leader>[ :<C-u>execute '!zeal ' . &filetype . "," . subtype . ":" 
 map <silent> <C-]> :CtrlPTag<cr><C-\>w
 " Ctrl+T fuzzy find ctags
 noremap <C-T> :CtrlPTag<CR>
-" Ctrl+P fuzzy find files
-noremap <C-P> :CtrlP<CR>
-
+" Super-F fuzzy find files
+noremap <C-F> :Files<CR> 
 " F-8 willl perform advanced code analyzing for JAVA
 " depends on PMD and this file https://gist.github.com/89luca89/37930d89082d48441cd6fa42d1bd9bea
 autocmd FileType java noremap <buffer> <F8> :<C-u>:new<CR>:0read !analyze-pmd.sh<CR>gg
@@ -152,7 +159,7 @@ noremap <S-M-Left> :2winc><cr>
 noremap <S-M-Right> :2winc<<cr>
 
 "shortcut night/day"
-map <S-n> :colorscheme hypsteria<cr>
+map <S-n> :colorscheme codedark<cr>
 map <S-d> :colorscheme github<cr>
 
 " ==========================================================================="
@@ -167,7 +174,7 @@ set noswapfile
 
 " play nicely with modern graphics
 set encoding=utf8
-colorscheme hypsteria
+colorscheme codedark "hypsteria
 set termguicolors
 
 set lazyredraw ttyfast synmaxcol=200 ttimeoutlen=20
@@ -184,5 +191,8 @@ set nowrap                            " play nicely with long lines
 set number                            " Enable line numbers
 let &colorcolumn="80"
 syntax on
+filetype plugin on
+
+
 
 
