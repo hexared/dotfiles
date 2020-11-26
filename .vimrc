@@ -5,34 +5,19 @@ call plug#begin('~/.vim/plugged')
 " utilities
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
-Plug 'scrooloose/nerdtree'            " split file manager
 Plug 'vim-airline/vim-airline'        " tabs and statusline
 Plug 'ervandew/supertab'              " Tab fr autocomplete
+Plug 'yggdroot/indentLine'
 " languages
-Plug 'zchee/deoplete-jedi'
-Plug 'Shougo/deoplete.nvim'
-Plug 'deoplete-plugins/deoplete-go', { 'do': 'make'}
-Plug 'roxma/nvim-yarp'
-Plug 'roxma/vim-hug-neovim-rpc'
-Plug 'sheerun/vim-polyglot'                             " lang packs!
-Plug 'artur-shaik/vim-javacomplete2', { 'for': 'java' } " java
-Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
-Plug 'sebastianmarkow/deoplete-rust', { 'for': 'rust' } " rust
-Plug 'scrooloose/syntastic'           " linting
-Plug 'ludovicchabant/vim-gutentags'   " tags navigation Ctrl+] or Ctrl+click to jump
-Plug 'stamblerre/gocode', { 'rtp': 'vim', 'do': '~/.vim/plugged/gocode/vim/symlink.sh' } " Go completion for deoplete
+Plug 'dense-analysis/ale'
+Plug 'natebosch/vim-lsc'
 " snippets
 Plug 'sirver/ultisnips'
 Plug 'honza/vim-snippets'
 " color schemes
 Plug 'endel/vim-github-colorscheme'
-Plug 'blueshirts/darcula' 
-Plug 'w0ng/vim-hybrid'
 Plug 'tomasiser/vim-code-dark'
-Plug 'Heorhiy/VisualStudioDark.vim'
-Plug 'lifepillar/vim-solarized8'
 Plug 'BrainDeath0/Hypsteria'
-Plug '89luca89/vim-code-dark'
 
 call plug#end()             " required
 filetype plugin indent on     " required
@@ -51,15 +36,6 @@ augroup autoformat_settings
   autocmd FileType sh noremap <buffer> <C-L> <Esc>:w<CR>:mkview<CR>:%!shfmt %<CR>:loadview<CR>
 augroup END
 
-" Use deoplete.
-let g:deoplete#enable_at_startup = 1
-let g:deoplete#sources#jedi#python_path = '/bin/python3.8'
-let g:deoplete#sources#jedi#extra_path = '/usr/local/lib64/python3.8/site-packages/'
-let g:deoplete#sources#go#gocode_binary = '$GOPATH/bin/gocode'
-let g:deoplete#sources#go#sort_class = ['package', 'func', 'type', 'var', 'const']
-let g:deoplete#sources#go#pointers = 1
-"let g:deoplete#num_processes = 1
-
 """ CtrlP
 " set ctrlp to same working directory
 let g:ctrlp_working_path_mode = 'ra'
@@ -76,30 +52,6 @@ let g:ctrlp_clear_cache_on_exit = 0
 """ Airline -> bufferline
 let g:airline#extensions#tabline#enabled = 1
 
-""" GutenTags
-let g:gutentags_enabled = 1
-let g:gutentags_generate_on_empty_buffer = 1
-let g:gutentags_cache_dir = "~/.vim/tags"
-let g:gutentags_resolve_symlinks = 1
-let g:gutentags_ctags_extra_args = ['--recurse=yes', '--extra=+f', '--fields=afmikKlnsStz']
-"""  Syntastic
-let g:syntastic_c_compiler_options = '--std=gnu11'                  " C
-let g:syntastic_cpp_compiler_options = ' -std=c++14 -stdlib=libc++' " C++
-let g:syntastic_yaml_checkers = ['js-yaml']                         " Yaml
-let g:syntastic_json_checkers = ['jsonlint']                        " Json
-" Java
-let g:syntastic_java_javac_config_file_enabled = 1  " enables definition of .syntastic_java_config file for custom classpaths
-let g:syntastic_java_checkers=['javac']
-let g:syntastic_go_checkers=['golint', 'go']                        " Go
-let g:syntastic_rust_checkers = ['rustc', 'cargo']                  " Rust
-let g:syntastic_python_checkers = ['python', 'flake8'] "['python', 'pylint', 'flake8']   
-" Python
-let g:syntastic_python_pylint_args='--jobs=8'
-" Generic Options
-let g:syntastic_check_on_open = 0
-let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_aggregate_errors = 1
-let g:syntastic_enable_signs = 1
 " I Like snippets!
 let g:UltiSnipsListSnippets="<c-h>"
 let g:UltiSnipsExpandTrigger="<tab>"
@@ -117,28 +69,12 @@ map <silent> <C-]> :CtrlPTag<cr><C-\>w
 " Ctrl+T fuzzy find ctags
 noremap <C-T> :CtrlPTag<CR>
 " Super-F fuzzy find files
-noremap <C-F> :Files<CR> 
+noremap <C-F> :Files<CR>
 " F-8 willl perform advanced code analyzing for JAVA
 " depends on PMD and this file https://gist.github.com/89luca89/37930d89082d48441cd6fa42d1bd9bea
 autocmd FileType java noremap <buffer> <F8> :<C-u>:new<CR>:0read !analyze-pmd.sh<CR>gg
-
-" Ctrl+B open/close file explorer
-noremap <C-B> :NERDTreeToggle<CR>
-" Ctrl+N relocate file explorer to opened file
-noremap <C-N> :NERDTreeFind<CR>
-
-" Ctrl-E show/hide errors window
-map <silent> <C-M> :<C-u>SyntasticCheck<CR>
-map <silent> <C-E> :<C-u>call ToggleErrors()<CR>
-function! ToggleErrors()
-    if empty(filter(tabpagebuflist(), 'getbufvar(v:val, "&buftype") is# "quickfix"'))
-         " No location/quickfix list shown, open syntastic error location panel
-         SyntasticCheck
-         Errors
-    else
-        lclose
-    endif
-endfunction
+let g:python3_host_prog = '/usr/bin/python3'
+let g:python_host_prog  = '/usr/bin/python2'
 
 """ Visual Mode
     """ Ctrl-C copy visual selection to clipboard
@@ -151,7 +87,6 @@ map <S-Tab> :bp<CR>
     " Ctrl+C close buffer ( pipe commands to fix behaviour with splits and netrw/nerdtree)
 nnoremap <C-c> :bp<bar>sp<bar>bn<bar>bd!<CR>
 
-" " Resize split window horizontally and vertically
 " Shortcuts to Shift-Alt-Arrows - Alt is mapped as M in vim
 noremap <S-M-Up> :2winc+<cr>
 noremap <S-M-Down> :2winc-<cr>
@@ -193,6 +128,39 @@ let &colorcolumn="80"
 syntax on
 filetype plugin on
 
+" LSP
+augroup lspbindings
+    autocmd! lspbindings
+    " IDE keybindings
+    autocmd Filetype c,cpp,python,go nnoremap <buffer> K  :<C-u>LSClientShowHover<CR>
+    autocmd Filetype c,cpp,python,go nnoremap <buffer> <leader>d :<C-u>vert LSClientGoToDefinitionSplit<CR>
+    autocmd Filetype c,cpp,python,go nnoremap <buffer> <leader>m :<C-u>LSClientFindReferences<CR>
+    autocmd Filetype c,cpp,python,go nnoremap <buffer> <leader>r :<C-u>LSClientRename<CR>
+augroup end
+augroup misc
+    autocmd! misc
+    " Refresh tags on save
+    autocmd BufWritePost * silent! :call GenTags()
+augroup end
 
-
-
+" ALE
+let g:ale_enabled           = 1
+let g:ale_fix_on_save       = 1
+let g:ale_fixers = {'*': ['remove_trailing_lines', 'trim_whitespace'],}
+let g:ale_yaml_yamllint_options     = '-d "{extends: default, rules: {line-length: disable, truthy: disable}}"'
+let g:lsc_auto_completeopt='menu,menuone,popup,noselect,noinsert'
+let g:lsc_server_commands  = {
+            \ "python": "pyls",
+            \ "go": {
+            \    "command": "gopls serve",
+            \    "log_level": -1,
+            \ },
+            \ 'cpp' : {
+            \   'name': 'cpp',
+            \   'command': 'clangd',
+            \ },
+            \ 'c' : {
+            \   'name': 'c',
+            \   'command': 'clangd',
+            \ },
+            \}
