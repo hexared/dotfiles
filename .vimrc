@@ -1,3 +1,4 @@
+let &t_ut=''
 set nocompatible              " required
 filetype off                  " required
 
@@ -18,6 +19,10 @@ Plug 'honza/vim-snippets'
 Plug 'endel/vim-github-colorscheme'
 Plug 'tomasiser/vim-code-dark'
 Plug 'BrainDeath0/Hypsteria'
+Plug 'ghifarit53/tokyonight-vim'
+Plug 'adrian5/oceanic-next-vim'
+Plug 'sainnhe/forest-night'
+Plug 'haishanh/night-owl.vim'
 
 call plug#end()             " required
 filetype plugin indent on     " required
@@ -94,7 +99,7 @@ noremap <S-M-Left> :2winc><cr>
 noremap <S-M-Right> :2winc<<cr>
 
 "shortcut night/day"
-map <S-n> :colorscheme codedark<cr>
+map <S-n> :colorscheme tokyonight<cr>
 map <S-d> :colorscheme github<cr>
 
 " ==========================================================================="
@@ -109,8 +114,9 @@ set noswapfile
 
 " play nicely with modern graphics
 set encoding=utf8
-colorscheme codedark "hypsteria
+colorscheme tokyonight "hypsteria
 set termguicolors
+" set t_Co=256
 
 set lazyredraw ttyfast synmaxcol=200 ttimeoutlen=20
 set mouse=a                           " it's always useful to use the mouse then needed
