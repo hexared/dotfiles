@@ -33,13 +33,14 @@ filetype plugin indent on     " required
 " :w save file, :mkview remember line, :%!formatter % to format and output,
 " :loadview to return to previous line
 augroup autoformat_settings
-  autocmd FileType go noremap <buffer> <C-L> <Esc>:w<CR>:mkview<CR>:%!gofmt %<CR>:loadview<CR>
-  autocmd FileType html,css,json noremap <buffer> <C-L> <Esc>:w<CR>:mkview<CR>:%!js-beautify %<CR>:loadview<CR>
-  autocmd FileType rust noremap <buffer> <C-L> <Esc>:w<CR>:mkview<CR>:%!rustfmt %<CR>:loadview<CR>
-  autocmd FileType python noremap <buffer> <C-L> <Esc>:w<CR>:mkview<CR>:%!autopep8 %<CR>:loadview<CR>
-  autocmd FileType c,cpp,javascript,java noremap <buffer> <C-L> <Esc>:w<CR>:mkview<CR>:%!clang-format -style=Chromium %<CR>:loadview<CR>
-  autocmd FileType sh noremap <buffer> <C-L> <Esc>:w<CR>:mkview<CR>:%!shfmt %<CR>:loadview<CR>
-augroup END
+  autocmd FileType go                       noremap <buffer> <C-L> <Esc>:w<CR>:mkview<CR>:%!gofmt %<CR>:loadview<CR>
+  autocmd FileType html,css,javascript      noremap <buffer> <C-L> <Esc>:w<CR>:mkview<CR>:%!js-beautify %<CR>:loadview<CR>
+  autocmd FileType rust                     noremap <buffer> <C-L> <Esc>:w<CR>:mkview<CR>:%!rustfmt %<CR>:loadview<CR>
+  autocmd FileType python                   noremap <buffer> <C-L> <Esc>:w<CR>:mkview<CR>:%!autopep8 %<CR>:loadview<CR>
+  autocmd FileType c,cpp,java               noremap <buffer> <C-L> <Esc>:w<CR>:mkview<CR>:%!clang-format -style=file %<CR>:loadview<CR>
+  autocmd FileType json                     noremap <buffer> <C-L> <Esc>:w<CR>:mkview<CR>:%!jsonlint %<CR>:loadview<CR>
+  autocmd FileType sh                       noremap <buffer> <C-L> <Esc>:w<CR>:mkview<CR>:%!shfmt %<CR>:loadview<CR>
+augroup end
 
 """ CtrlP
 " set ctrlp to same working directory
@@ -72,11 +73,11 @@ let g:subtype = ""
 map <silent> <leader>[ :<C-u>execute '!zeal ' . &filetype . "," . subtype . ":" . expand("<cword>") . " &>> /dev/null &"<CR><CR>
 map <silent> <C-]> :CtrlPTag<cr><C-\>w
 " Ctrl+T fuzzy find ctags
-noremap <C-T> :CtrlPTag<CR>
+noremap <C-T> :tabnew<CR>
 " Super-F fuzzy find files
 noremap <C-F> :Files<CR>
+noremap <C-B> :Buffer<CR>
 " F-8 willl perform advanced code analyzing for JAVA
-" depends on PMD and this file https://gist.github.com/89luca89/37930d89082d48441cd6fa42d1bd9bea
 autocmd FileType java noremap <buffer> <F8> :<C-u>:new<CR>:0read !analyze-pmd.sh<CR>gg
 let g:python3_host_prog = '/usr/bin/python3'
 let g:python_host_prog  = '/usr/bin/python2'
@@ -89,7 +90,7 @@ vnoremap <C-c> :'<,'>w !xclip -sel clip<CR><CR>
     " navigate tabs Tab (fw) S-Tab (prev)
 map <Tab> :bn<CR>
 map <S-Tab> :bp<CR>
-    " Ctrl+C close buffer ( pipe commands to fix behaviour with splits and netrw/nerdtree)
+    " Ctrl+C close buffer
 nnoremap <C-c> :bp<bar>sp<bar>bn<bar>bd!<CR>
 
 " Shortcuts to Shift-Alt-Arrows - Alt is mapped as M in vim
@@ -163,10 +164,13 @@ let g:lsc_server_commands  = {
             \ },
             \ 'cpp' : {
             \   'name': 'cpp',
-            \   'command': 'clangd',
+            \   'command': 'clangd --log=error',
             \ },
             \ 'c' : {
             \   'name': 'c',
-            \   'command': 'clangd',
+            \   'command': 'clangd --log=error',
             \ },
             \}
+
+" Command Aliases
+command W w
