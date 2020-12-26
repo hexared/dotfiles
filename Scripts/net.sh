@@ -2,7 +2,7 @@
 
 
 if [[ "$(ps -p $(pidof tmux | cut -d" " -f2) -o etime= | cut -d' ' -f7)" = "00:00" ]]; then
-    echo "\u262d Checking connection..."
+    echo "🌐 Checking connection..."
 fi
 
 function main(){
@@ -17,7 +17,7 @@ function main(){
         #echo "🌐$IP | 🔻$DL | 🔺$UP | 🏓 $PN[1,4]"
         echo "🔻$DL | 🔺$UP | 🏓 $PN[1,4]"
     else
-        echo "\u2716 No network connection"
+        echo "❌ No network connection"
     fi
 }
 
