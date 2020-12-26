@@ -17,7 +17,7 @@ function main(){
         #echo "🌐$IP | 🔻$DL | 🔺$UP | 🏓 $PN[1,4]"
         echo "🔻$DL | 🔺$UP | 🏓 $PN[1,4]"
     else
-        echo "❌ No network connection"
+        echo "❌ No internet connection"
     fi
 }
 
