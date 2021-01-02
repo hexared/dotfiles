@@ -105,6 +105,9 @@ source $ZSH/oh-my-zsh.sh
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 alias p3="python3"
+alias klean="kathara lclean"
+alias kstart="kathara lstart"
+alias konnect="kathara connect -l"
 
 export GOPATH="/home/hexared/go"
 export PATH=$PATH:$GOPATH/bin
