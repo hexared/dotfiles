@@ -3,6 +3,7 @@ copy-on-select=true
 encodings=['UTF-8']
 prompt-on-close-process=false
 prompt-on-delete-profile=false
+quake-specific-monitor=0
 sidebar-on-right=false
 terminal-title-show-when-single=false
 terminal-title-style='none'
@@ -17,6 +18,7 @@ app-new-window='<Primary><Shift>n'
 app-preferences='<Primary><Shift>p'
 
 [profiles]
+default='2b7c4080-0ddd-46c5-8f23-563fd3ba789d'
 list=['2b7c4080-0ddd-46c5-8f23-563fd3ba789d', '5375d37c-9ee2-43fa-ae71-12d793cbd3d5']
 
 [profiles/2b7c4080-0ddd-46c5-8f23-563fd3ba789d]
@@ -26,20 +28,27 @@ badge-color='#AC7EA8'
 badge-color-set=false
 badge-text=''
 bold-color-set=false
+bold-is-bright=true
 cell-height-scale=1.1000000000000001
 cell-width-scale=1.0
 cursor-blink-mode='off'
 cursor-colors-set=false
 cursor-shape='block'
-custom-command='zsh -c "tmux && zsh"'
+custom-command='tmux'
+default-size-columns=80
+default-size-rows=25
 dim-transparency-percent=0
+draw-margin=80
 exit-action='close'
 font='Monospace 10'
 foreground-color='#7373D2D21616'
+highlight-background-color='#C0C01C1C2828'
 highlight-colors-set=false
+highlight-foreground-color='#2626A2A26969'
 login-shell=false
-palette=['#1E1E1E', '#CF6A4C', '#8F9D6A', '#F9EE98', '#7587A6', '#9B859D', '#AFC4DB', '#A7A7A7', '#5F5A60', '#CF6A4C', '#8F9D6A', '#F9EE98', '#7587A6', '#9B859D', '#AFC4DB', '#FFFFFF']
+palette=['#000000', '#EDED33333B3B', '#2E2EC2C27E7E', '#FFFFA3A34848', '#00000000AAAA', '#91914141ACAC', '#00AAAA', '#AAAAAA', '#545454', '#FF5454', '#8F8FF0F0A4A4', '#FFFF54', '#54545454FFFF', '#FF54FF', '#54FFFF', '#FFFFFF']
 scroll-on-output=false
+scrollback-lines=10000
 shortcut='<Primary><Shift>r'
 show-scrollbar=false
 terminal-bell='none'
