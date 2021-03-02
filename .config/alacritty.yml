@@ -2,16 +2,18 @@ env:
   TERM: xterm-256color
     #  WINIT_X11_SCALE_FACTOR: "1"
 
+shell:
+  program: /bin/tmux
+
 window:
   dimensions:
     columns: 80
-    lines: 24
+    lines: 30
 
       #padding:
       #  x: 10
       #  y: 10
       #
-  dynamic_padding: false
 
   decorations: none
 
@@ -22,19 +24,19 @@ scrolling:
 
 font:
   normal:
-    family: Hack
+    family: monospace
     style: Regular
 
   bold:
-    family: Hack
+    family: monospace
     style: Bold
 
   italic:
-    family: Hack
+    family: monospace
     style: Italic
 
   bold_italic:
-    family: Hack
+    family: monospace
     style: Bold Italic
 
   size: 9.5
@@ -98,7 +100,7 @@ cursor:
   unfocused_hollow: true
   thickness: 0.15
 
-live_config_reload: false
+live_config_reload: true
 
 working_directory: None
 
