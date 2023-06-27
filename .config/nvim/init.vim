@@ -3,7 +3,7 @@ set nocompatible              " required
 filetype off                  " required
 syntax on
 
-call plug#begin('~/.vim/plugged')
+call plug#begin('~/.local/share/nvim/site/plugged')
 " utilities
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
@@ -16,13 +16,15 @@ Plug 'mrk21/yaml-vim'
 Plug 'dense-analysis/ale'
 Plug 'natebosch/vim-lsc'
 Plug 'hashivim/vim-terraform'
-"Plug 'glench/vim-jinja2-syntax'
 Plug 'lepture/vim-jinja'
 Plug 'tbastos/vim-lua'
 Plug 'Glench/Vim-Jinja2-Syntax'
-" snippets
-"Plug 'sirver/ultisnips'
-"Plug 'honza/vim-snippets'
+Plug 'honza/vim-snippets'
+Plug 'garbas/vim-snipmate'
+Plug 'MarcWeber/vim-addon-mw-utils'
+Plug 'tomtom/tlib_vim'
+" Debugging
+Plug 'puremourning/vimspector'
 " color schemes
 Plug 'endel/vim-github-colorscheme'
 Plug 'tomasiser/vim-code-dark'
@@ -46,6 +48,8 @@ filetype plugin indent on     " required
 " :w save file, :mkview remember line, :%!formatter % to format and output,
 " :loadview to return to previous line
 augroup autoformat_settings
+  autocmd!
+  set foldmethod=syntax
   autocmd FileType go                       noremap <buffer> <C-L> <Esc>:w<CR>:mkview<CR>:%!gofmt %<CR>:loadview<CR>
   autocmd FileType html,css,javascript      noremap <buffer> <C-L> <Esc>:w<CR>:mkview<CR>:%!js-beautify %<CR>:loadview<CR>
   autocmd FileType rust                     noremap <buffer> <C-L> <Esc>:w<CR>:mkview<CR>:%!rustfmt %<CR>:loadview<CR>
@@ -53,6 +57,7 @@ augroup autoformat_settings
   autocmd FileType c,cpp,java               noremap <buffer> <C-L> <Esc>:w<CR>:mkview<CR>:%!clang-format -style=file %<CR>:loadview<CR>
   autocmd FileType json                     noremap <buffer> <C-L> <Esc>:w<CR>:mkview<CR>:%!jsonlint %<CR>:loadview<CR>
   autocmd FileType sh                       noremap <buffer> <C-L> <Esc>:w<CR>:mkview<CR>:%!shfmt %<CR>:loadview<CR>
+  autocmd FileType vim                      setlocal foldmethod=marker
 augroup end
 
 """ CtrlP
@@ -71,11 +76,6 @@ let g:ctrlp_clear_cache_on_exit = 0
 """ Airline -> bufferline
 let g:airline#extensions#tabline#enabled = 1
 
-" I Like snippets!
-let g:UltiSnipsListSnippets="<c-h>"
-let g:UltiSnipsExpandTrigger="<tab>"
-let g:UltiSnipsJumpForwardTrigger="<tab>"
-let g:UltiSnipsJumpBackwardTrigger="<s-tab>"
 """ GENERIC PROGRAMMING
 "
 " Ctrl+] will perform GoTo. Available for c, c++, objc, objcpp, cs, go, javascript, python, rust
@@ -92,7 +92,7 @@ noremap <C-F> :Files<CR>
 noremap <C-B> :Buffer<CR>
 " F-8 willl perform advanced code analyzing for JAVA
 autocmd FileType java noremap <buffer> <F8> :<C-u>:new<CR>:0read !analyze-pmd.sh<CR>gg
-let g:python3_host_prog = '/usr/bin/python3'
+let g:python3_host_prog = '/usr/local/bin/python3'
 let g:python_host_prog  = '/usr/bin/python2'
 
 """ Visual Mode
@@ -132,6 +132,8 @@ let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
 let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
 colorscheme tokyonight
 
+" functions
+
 set lazyredraw ttyfast synmaxcol=200 ttimeoutlen=20
 set mouse=a                           " it's always useful to use the mouse then needed
 set hidden                            " change buffer without saving
@@ -167,27 +169,55 @@ augroup misc
     autocmd BufWritePost * silent! :call GenTags()
 augroup end
 
+" Snippets
+let g:snipMate = { 'snippet_version' : 1 }
+
 " ALE
 let g:ale_enabled           = 1
 let g:ale_fix_on_save       = 1
 let g:ale_fixers = {'*': ['remove_trailing_lines', 'trim_whitespace'],}
 let g:ale_yaml_yamllint_options     = '-d "{extends: default, rules: {line-length: disable, truthy: disable}}"'
 let g:lsc_auto_completeopt='menu,menuone,popup,noselect,noinsert'
-let g:lsc_server_commands  = {
-            \ "python": "pyls",
-            \ "go": {
-            \    "command": "gopls serve",
-            \    "log_level": -1,
-            \ },
-            \ 'cpp' : {
-            \   'name': 'cpp',
-            \   'command': 'clangd --log=error',
-            \ },
-            \ 'c' : {
-            \   'name': 'c',
-            \   'command': 'clangd --log=error',
-            \ },
+"let g:lsc_server_commands  = {
+"            \ '"python": '"pyls",
+"            \ '"go": {
+"            \    '"command": '"gopls serve",
+"            \    '"log_level": -1,
+"            \ },
+"            \ 'cpp' : {
+"            \   'name': 'cpp',
+"            \   'command': 'clangd --log=error',
+"            \ },
+"            \ 'c' : {
+"            \   'name': 'c',
+"            \   'command': 'clangd --log=error',
+"            \ },
+"            \}
+let g:ale_linters = {
+            \   'c':      ['cc', 'ccls', 'clangd'],
+            \   'cpp':    ['cc', 'ccls', 'clangd'],
+            \   'go':     ['gobuild', 'gofmt', 'golangci-lint', 'golint', 'gopls', 'govet'],
+            \   'python': ['flake8', 'mypy', 'pycodestyle', 'pydocstyle', 'pyflakes', 'pylint', 'pylsp'],
+            \   'rust':   ['analyzer', 'cargo', 'clippy', 'rls', 'rustc'],
             \}
+
+" LSP autostop
+let g:stoplsp = 1
+augroup lsp_idle_saving
+    autocmd!
+    autocmd InsertEnter  * ALEEnable
+    autocmd BufLeave     * let g:stoplsp = 1
+    autocmd CursorHold   * let g:stoplsp = 1
+    autocmd CursorMoved  * let g:stoplsp = 0
+    autocmd CursorMovedI * let g:stoplsp = 0
+    autocmd InsertEnter  * let g:stoplsp = 0
+augroup end
+function! s:disable_lsp(timer_id)
+    if g:stoplsp == 1
+        ALEStopAllLSPs
+    endif
+endfun
+silent call timer_start(1000 * 300, function('s:disable_lsp'), {'repeat': -1})
 
 " Command Aliases
 command W w
