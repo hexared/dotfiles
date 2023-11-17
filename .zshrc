@@ -8,13 +8,11 @@ export ZSH="/home/hexared/.oh-my-zsh"
 # load a random theme each time oh-my-zsh is loaded, in which case,
 # to know which specific one was loaded, run: echo $RANDOM_THEME
 # See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
-ZSH_THEME="trapd00r"
-#"blinks"
-#"kphoen"
+ZSH_THEME="trapd00r-plus"
 
 # Set list of themes to pick from when loading at random
 # Setting this variable when ZSH_THEME=random will cause zsh to load
-# a theme from this variable instead of looking in ~/.oh-my-zsh/themes/
+# a theme from this variable instead of looking in $ZSH/themes/
 # If set to an empty array, this variable will have no effect.
 # ZSH_THEME_RANDOM_CANDIDATES=( "robbyrussell" "agnoster" )
 
@@ -35,7 +33,7 @@ ZSH_THEME="trapd00r"
 # export UPDATE_ZSH_DAYS=13
 
 # Uncomment the following line if pasting URLs and other text is messed up.
-# DISABLE_MAGIC_FUNCTIONS=true
+# DISABLE_MAGIC_FUNCTIONS="true"
 
 # Uncomment the following line to disable colors in ls.
 # DISABLE_LS_COLORS="true"
@@ -47,6 +45,8 @@ ZSH_THEME="trapd00r"
 # ENABLE_CORRECTION="true"
 
 # Uncomment the following line to display red dots whilst waiting for completion.
+# Caution: this setting can cause issues with multiline prompts (zsh 5.7.1 and newer seem to work)
+# See https://github.com/ohmyzsh/ohmyzsh/issues/5765
 # COMPLETION_WAITING_DOTS="true"
 
 # Uncomment the following line if you want to disable marking untracked files
@@ -66,18 +66,15 @@ ZSH_THEME="trapd00r"
 # ZSH_CUSTOM=/path/to/new-custom-folder
 
 # Which plugins would you like to load?
-# Standard plugins can be found in ~/.oh-my-zsh/plugins/*
-# Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
+# Standard plugins can be found in $ZSH/plugins/
+# Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(
-    git
-    python
-    zsh-autosuggestions
-    zsh-syntax-highlighting
-)
+plugins=(git)
 
 source $ZSH/oh-my-zsh.sh
+[[ /usr/local/bin/kubectl ]] && source <(kubectl completion zsh)
+compdef kubecolor=kubectl
 
 # User configuration
 
@@ -87,11 +84,11 @@ source $ZSH/oh-my-zsh.sh
 # export LANG=en_US.UTF-8
 
 # Preferred editor for local and remote sessions
- if [[ -n $SSH_CONNECTION ]]; then
-   export EDITOR='vim'
- else
-   export EDITOR='nvim'
- fi
+if [[ -n $SSH_CONNECTION ]]; then
+  export EDITOR='vim'
+else
+  export EDITOR='nvim'
+fi
 
 # Compilation flags
 # export ARCHFLAGS="-arch x86_64"
@@ -104,10 +101,28 @@ source $ZSH/oh-my-zsh.sh
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
-alias p3="python3"
-alias klean="kathara lclean"
-alias kstart="kathara lstart"
-alias konnect="kathara connect -l"
 
-export GOPATH="/home/hexared/go"
-export PATH=$PATH:$GOPATH/bin
+alias kc="kubecolor"
+alias kctl="kubectl"
+alias p3="python3"
+alias p2="python2"
+alias gost="docker run  --rm  vuls/gost"
+alias go-cve="docker run  --rm  vuls/go-cve-dictionary"
+alias goval="docker run  --rm  vuls/goval-dictionary"
+alias msfdb="docker run  --rm  vuls/go-msfdb"
+alias go-exp="docker run  --rm  vuls/go-exploitdb"
+alias vuls="docker run  --rm  vuls/vuls"
+alias notify="telegram-send 'Macbook: Done!'"
+alias tf="terraform"
+alias b64="base64"
+alias tmux-clean="for i in $(tmux list-sessions | grep -v attached | cut -d':' -f1); do tmux kill-session -t$i; done"
+alias vim="nvim"
+export PATH="/usr/local/opt/curl/bin:$PATH"
+
+export WASMTIME_HOME="$HOME/.wasmtime"
+
+export PATH="$WASMTIME_HOME/bin:$PATH"
+export PATH="$PATH:/usr/local/sbin:/usr/local/bin"
+
+autoload -U +X bashcompinit && bashcompinit
+complete -o nospace -C /usr/local/bin/terraform terraform
