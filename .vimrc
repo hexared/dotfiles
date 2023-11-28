@@ -16,6 +16,7 @@ Plug 'mrk21/yaml-vim'
 Plug 'dense-analysis/ale'
 Plug 'natebosch/vim-lsc'
 Plug 'hashivim/vim-terraform'
+Plug 'ekalinin/Dockerfile.vim'
 "Plug 'glench/vim-jinja2-syntax'
 Plug 'lepture/vim-jinja'
 Plug 'tbastos/vim-lua'
@@ -23,7 +24,8 @@ Plug 'Glench/Vim-Jinja2-Syntax'
 " snippets
 "Plug 'sirver/ultisnips'
 "Plug 'honza/vim-snippets'
-" color schemes
+"b color schemes
+Plug 'romgrk/doom-one.vim'
 Plug 'endel/vim-github-colorscheme'
 Plug 'tomasiser/vim-code-dark'
 Plug 'BrainDeath0/Hypsteria'
@@ -39,6 +41,9 @@ Plug 'chriskempson/base16-vim'
 
 call plug#end()             " required
 filetype plugin indent on     " required
+
+" Leader config
+g:mapleader = "Tab"
 
 " Formatting
     " Ctrl+L Format Code
@@ -112,8 +117,11 @@ noremap <S-M-Left> :2winc><cr>
 noremap <S-M-Right> :2winc<<cr>
 
 "shortcut night/day"
-map <C-S-n> :colorscheme tokyonight<cr>
+"map <C-S-n> :colorscheme tokyonight<cr>
+map <C-S-n> :colorscheme doom-one<cr>
+noremap <Leader><n> :colorscheme doom-one<cr>
 map <C-S-d> :colorscheme github<cr>
+noremap <Leader>d <cmd>:colorscheme github<cr>
 
 " ==========================================================================="
 " Resize Split When the window is resized"
@@ -130,7 +138,8 @@ set encoding=utf8
 set termguicolors
 let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
 let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
-colorscheme tokyonight
+"colorscheme tokyonight
+colorscheme doom-one
 
 set lazyredraw ttyfast synmaxcol=200 ttimeoutlen=20
 set mouse=a                           " it's always useful to use the mouse then needed
@@ -162,7 +171,7 @@ augroup misc
     au! BufNewFIle,BufReadPost *.{yaml,yml}     set filetype=yaml
     autocmd Filetype yaml                       setlocal ts=2 sts=2 sw=2 expandtab
     "Docker/Vagrant/Jenkins
-    autocmd BufRead,BufNewFIle *file            setlocal ft=Configfile ts=2 sts=2 sw=2 expandtab
+    autocmd BufRead,BufNewFIle *file            setlocal ts=2 sts=2 sw=2 expandtab
     " Refresh tags on save
     autocmd BufWritePost * silent! :call GenTags()
 augroup end
